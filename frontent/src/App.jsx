@@ -8,7 +8,7 @@ import WebsiteEditor from "./pages/Editor";
 import Generate from './pages/Generate'
 import LiveSite from "./pages/LiveSite";
 
-export const serverUrl="https://ai-mern-a99l.onrender.com"
+export const serverUrl="https://webcraft-backend-w1i2.onrender.com"
 function App(){
   useGetCurrentUser()
   const {userData}=useSelector(state=>state.user)
