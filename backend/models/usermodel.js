@@ -1,9 +1,9 @@
-import mongoose, { trusted } from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema=new  mongoose.Schema({
   name:{
     type:String,
-    unique:true,
+  
     required:true
   },
   email:{
@@ -16,7 +16,7 @@ const userSchema=new  mongoose.Schema({
   },
   credits:{
     type:Number, 
-    default:100,
+    default:10000000,
     min:0
   },
   plan:{

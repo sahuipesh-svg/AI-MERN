@@ -13,12 +13,12 @@ const messageSchema=new mongoose.Schema({
 },{timestamps:true})
 const websiteSchema=new mongoose.Schema({
     user:{
-      type:mongoose.Schema.Types.objectId,
+      type:mongoose.Schema.Types.ObjectId,
       ref:"User",
       required:true
     },
     title:{
-      type:string,
+      type:String,
       default:"Untitled website"
     },
     latestCode:{
@@ -26,7 +26,8 @@ const websiteSchema=new mongoose.Schema({
       required:true
     },
     conversation:{
-      messageSchema
+      type:[messageSchema],
+      default:[]
     },
     deployed:{
       type:Boolean,

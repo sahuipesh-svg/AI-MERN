@@ -1,5 +1,5 @@
-import extractJson from "../utils/extractJson";
-import {generateResponse} from "../config/openRouter.js"
+import extractJson from "../utils/extractJson.js";
+import generateResponse from "../config/openRouter.js"
 import Website from "../models/website.model.js";
 import User from "../models/usermodel.js";
 
@@ -167,10 +167,10 @@ export const generateWebsite=async (req,res)=>{
    if(user.credits<50){
        return res.status(400).json({message:"you have not enough credits to generate a website"})
    }
-   const finalPrompt=masterPrompt.replace("USER_PROMPT",prompt)
+   const finalPrompt=masterPrompt.replace("{USER_PROMPT}",prompt)
    let raw=""
    let parsed=null;
-   for(let i=0;i<2 && !parsed;index++){
+   for(let i=0;i<2 && !parsed;i++){
     raw=await generateResponse(finalPrompt)
     parsed=await extractJson(raw)
     if(!parsed){
@@ -208,21 +208,21 @@ export const generateWebsite=async (req,res)=>{
  })
 
    }catch(error){
-       return res.status(500).json({message:`generate webiste error ${error}`})
+       return res.status(500).json({message:`generate website error ${error}`})
    }
 }
 
 
 export const getWebsiteById=async (req,res)=>{
    try{
-    const webiste=await Website.findOne({
+    const website=await Website.findOne({
        _id:req.params.id,
        user:req.user._id
     })
     if(!website){
       return res.status(400).json({message:"website not found"})
     }
-    return res.status(200).json(webiste)
+    return res.status(200).json(website)
    }catch(error){
      return res.status(500).json({message:`generate website error ${error}`})
    }
@@ -235,7 +235,7 @@ export const changes=async (req,res)=>{
      return res.status(400).json({message:"prompt is required"})
    }
    
-    const webiste=await Website.findOne({
+    const website=await Website.findOne({
        _id:req.params.id,
        user:req.user._id
     })
@@ -309,7 +309,7 @@ export const getAll=async (req,res)=>{
 
 export const deploy=async(req,res)=>{
   try{
-const webiste=await Website.findOne({
+const website=await Website.findOne({
        _id:req.params.id,
        user:req.user._id
     })
@@ -317,10 +317,10 @@ const webiste=await Website.findOne({
       return res.status(400).json({message:"website not found"})
     }
     if(!website.slug){
-      website.slug=webiste.title.toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,60)+website._id,toString().slice(-4)
+      website.slug=website.title.toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,60)+website._id.toString().slice(-4)
     }
     website.deployed=true
-    webiste.deployUrl=`${process.env.FRONTEND_URL}/site${website.slug}`
+    website.deployUrl=`${process.env.FRONTEND_URL}/site${website.slug}`
     await website.save()
     return res.status(200).json({
       url:website.deployUrl
@@ -334,13 +334,14 @@ const webiste=await Website.findOne({
 
 export const getBySlug=async (req,res)=>{
   try{
-   const webiste=await Website.findOne({
+   const website=await Website.findOne({
      slug:req.params.slug,
      user:req.user._id
    })
    if(!website){
     return res.status(400).json({message:"website not found"})
    }
+   return res.status(200).json(website);
   }catch(error){
      return res.status(500).json({message:`deploy website error ${error}`})
   }

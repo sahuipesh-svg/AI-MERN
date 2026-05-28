@@ -4,6 +4,10 @@ import LoginModal from "../components/loginModal";
 import {} from "lucide-react"
 import { serverUrl } from "../App";
 import axios from "axios";
+import { useSelector,useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setUserData } from "../redux/userSlice";
+import {Coins} from 'lucide-react'
 
 function Home(){
 const highlights=[
@@ -39,12 +43,12 @@ const handleLogOut=async()=>{
      >
         <div className='max-w-7xl mx-auto px-6 py-4 flex justify-between items-center'>
            <div className="text-lg font-semibold">
-             GenWeb.ai
+             WebCraft.ai
            </div>
            <div className="flex items-center gap-5">
            
             {userData && <div className='flex items-center px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm cursor-pointer hover:bg-white/10 transition'>
-                <coins size={14} className='text-yellow-400'/>
+                <Coins size={14} className='text-yellow-400'/>
                 <span className='text-zinc-400'>Credits</span>
                 <span>{userData.credits}</span>
                 <span className='font-semibold'>+</span>
@@ -109,7 +113,7 @@ const handleLogOut=async()=>{
            Describe your idea and let AI generate a modern,responsive,production-ready websites
         </motion.p>
       
-          <button className="mt-12 px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition mt-12" onClick={()=>navigate("/dashboard")}>{userData?"go to dashboard":"Get Started"}</button>
+          <button className="mt-12 px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition mt-12" onClick={()=>userData?navigate("/dashboard"):setOpenLogin(true)}>{userData?"go to dashboard":"Get Started"}</button>
     
      </section>
      <section className="max-w-7xl mx-auto px-6 pb-32">
@@ -121,18 +125,14 @@ const handleLogOut=async()=>{
              whileInView={{opacity:1,y:0}}
              className="rounded-2xl bg-white/5 border border-white/10 p-8"
           >
-            <h1 className="text-xl font-semibold mb-3">{h}</h1>
-            <p className="text-sm text-zinc-400">
-
-              Genweb.ai builds real websites-clean code,
-              animations,responsiveness and scalable structure.
-            </p>
+            <h1 className="text-xl font-semibold mb-3 px-10">{h}</h1>
+            
           </motion.div>
        ))}
     </div>
      </section>
      <footer>
-       &copy;{new Date().getFullYear()} GenWeb.ai
+       &copy;{new Date().getFullYear()} WebCraft.ai
      </footer>
      {openLogin && <LoginModal open={openLogin} onClose={()=>setOpenLogin(false)}/>}
     </div>

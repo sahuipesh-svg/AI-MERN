@@ -70,7 +70,7 @@ function LoginModal({ open, onClose }) {
                       Welcome to
                       </span>
                       <span className='bg-linear-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent'>
-                       Genweb.ai
+                       WebCraft.ai
                       </span>
                  </h2>
                  <motion.button

@@ -3,7 +3,7 @@ import {BrowserRouter,Routes,Route}  from "react-router-dom"
 import Home from './pages/Home'
 import useGetCurrentUser from './hooks/useGetCurrentUser'
 import {useSelector} from 'react-redux'
-import dashboard from './pages/Dashboard'
+import Dashboard from './pages/Dashboard'
 import WebsiteEditor from "./pages/Editor";
 import Generate from './pages/Generate'
 import LiveSite from "./pages/LiveSite";
@@ -16,9 +16,9 @@ function App(){
      <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>
-        <Route path='/dashboard' element={userData?<DashBoard/>:<Home/>}/>
+        <Route path='/dashboard' element={userData?<Dashboard/>:<Home/>}/>
         <Route path='/generate'element={userData?<Generate/>:<Home/>}/>
-        <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<HOme/>}/>
+        <Route path='/editor/:id' element={userData?<WebsiteEditor/>:<Home/>}/>
         <Route path='/site/:id' element={<LiveSite/>}/>
       </Routes>
      </BrowserRouter>

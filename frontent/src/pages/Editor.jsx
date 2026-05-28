@@ -1,16 +1,17 @@
-import react, { use, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { serverUrl } from '../App'
-import Website from '../../../backend/models/website.model'
-import { Monitor, Rocket } from 'lucide-react'
+import { useParams } from 'react-router-dom'
+import { Monitor, Rocket,Send,X,Code2 } from 'lucide-react'
 import { AnimatePresence } from 'framer-motion'
 import {motion} from 'framer-motion'
 import Editor from '@monaco-editor/react'
+import axios from 'axios'
 function WebsiteEditor(){
   const {id}=useParams()
   const [website,setWebsite]=useState(null)
   const [error,setError]=useState("")
   const [code,setCode]=useState("")
-  const [prompt,setPrompt]=useEffect("")
+  const [prompt,setPrompt]=useState("")
   const [messages,setMessages]=useState([])
   const iframeRef=useRef(null)
   const [updateLoading,setUpdateLoading]=useState(false)
@@ -75,7 +76,7 @@ useEffect(()=>{
 
   useEffect(()=>{
    if(!iframeRef.current || !code)return;
-   const blog=new Blog([code],{type:"text/html"})
+   const blob=new Blob([code],{type:"text/html"})
    const url=URL.createObjectURL(blob)
    iframeRef.current.src=url
    return ()=>URL.revokeObjectURL(blob)
@@ -96,11 +97,11 @@ useEffect(()=>{
   }
    return (
     <div className='h-screen w-screen flex bg-black text-white overflow-hidden'>
-       <aside className='hidden lg-flex w-[380px] flex-col border-r border-white/10 bg-black/80' > 
+       <aside className='hidden lg:flex w-[380px] flex-col border-r border-white/10 bg-black/80' > 
         
          <Header/>
       <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
-   {messages.conversation.map((m,i)=>(
+   {messages.map((m,i)=>(
     <div
     key={i}
     className={`max-w-[85%] ${
@@ -142,8 +143,8 @@ useEffect(()=>{
           {website.deployed?"": <button className='flex items-center gap-2 px-4 py-1.5 rounded-lg bg-linear-to-r from-indigo-500 to-purple-500 text-sm font-semibold hover:scale-105 transition'
          onClick={handleDeploy}><Rocket size={14}/>Deploy</button>}
         
-         <button className='p-2' onClick={()=>setShowCode(true)}><code2 size={18}/></button>
-         <button className='p-2' onClick={setShowFullPreview(true)}><Monitor size={18}/></button>
+         <button className='p-2' onClick={()=>setShowCode(true)}><Code2 size={18}/></button>
+         <button className='p-2' onClick={()=>setShowFullPreview(true)}><Monitor size={18}/></button>
          </div>
         </div>
          <iframe ref={iframeRef} className='flex-1 w-full bg-white'/>
@@ -177,7 +178,7 @@ useEffect(()=>{
            className='fixed inset-0 z-[9999] bg-black'
           >
               <iframe className='w-full h-full bg-white' srcDoc={code}/>
-              <button onClick={setShowFullPreview(false)} className='absolute top-4 right-4 p-2 bg-black/70'><X/></button>
+              <button onClick={()=>setShowFullPreview(false)} className='absolute top-4 right-4 p-2 bg-black/70'><X/></button>
           </motion.div>
 
          )}

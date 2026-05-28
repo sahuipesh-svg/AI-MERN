@@ -1,21 +1,22 @@
-import { ArrowLeft, Rocket } from 'lucide-react'
+import { ArrowLeft, Rocket ,Check,Share2} from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../App'
 import axios from 'axios'
+
 function Dashboard(){
   const {userData}=useSelector(state=>state.user)
   const navigate=useNavigate()
-  const [website,setWebsites]=useState(null)
+  const [websites,setWebsites]=useState([])
   const [loading,setLoading]=useState(false)
   const [error,setError]=useState("")
   const [copiedId,setCopiedId]=useState(null)
-  const handleDeploy=async ()=>{
+  const handleDeploy=async (id)=>{
      try{
     const result=await axios.get(`${serverUrl}/api/website/deploy/${id}`,{withCredentials:true})
-    window.open(`${result.data.url},"_blank"`)
+    window.open(result.data.url,"_blank")
     setWebsites((prev)=>
     prev.map((w)=>w._id===id?{...w,deployed:true,deployUrl:result.data.url}:w)
    )
@@ -35,8 +36,9 @@ function Dashboard(){
          setError(error.response.data.message)
    setLoading(false)
        }
-       handleGetAllWebsites();
+   
     }
+     handleGetAllWebsites();
   },[])
 
   const handleCopy= async (site)=>{

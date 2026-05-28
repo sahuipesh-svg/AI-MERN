@@ -1,4 +1,4 @@
-const extractJson=async (text)=>{
+const extractJson= (text)=>{
     if(!text){
       return 
     }
@@ -7,8 +7,12 @@ const extractJson=async (text)=>{
     .trim();
     const firstBrace=cleaned.indexOf('{')
     const closeBrace=cleaned.lastIndexOf('}')
-    if(firstBrace==-1|| secondBrace==-1)return null
+    if(firstBrace==-1|| closeBrace==-1)return null
+    try{
     const jsonString=cleaned.slice(firstBrace,closeBrace+1)
     return JSON.parse(jsonString);
+    }catch{
+      return null;
+    }
 }
 export default extractJson

@@ -1,5 +1,5 @@
 import express from 'express'
-import { deploy, generateWebsite, getAll, getBySlug, getWebsiteById } from '../controllers/website.controller.js'
+import { deploy, generateWebsite, getAll, getBySlug, getWebsiteById,changes } from '../controllers/website.controller.js'
 import isAuth from "../middlewares/isAuth.js"
 
 const websiteRouter=express.Router()

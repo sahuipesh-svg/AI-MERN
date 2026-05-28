@@ -1,4 +1,4 @@
-import react, { use, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +20,7 @@ function Generate(){
   const handleGenerateWebsite=async ()=>{
     setLoading(true)
      try{
-       const result=await axios.post(`${serverUrl}/ap/website/generate`,{prompt},{withCredentials:true})
+       const result=await axios.post(`${serverUrl}/api/website/generate`,{prompt},{withCredentials:true})
        setProgress(100)
        setLoading(false)
        navigate(`/editor/${result.data.websiteId}`)
@@ -38,9 +38,9 @@ useEffect(()=>{
   }
   let value=0;
   let phase=0
-  const interval=-setInterval(()=>{
+  const interval=setInterval(()=>{
   const increment=value<20
-  ?Math.random*1.5
+  ?Math.random()*1.5
   :value<60
   ?Math.random()*1.2
   :Math.random()*0.6
@@ -65,7 +65,7 @@ useEffect(()=>{
                 <button onClick={()=>navigate("/")} className='p-2 rounded-lg hover:bg-white/10 transition'>
                    <ArrowLeft size={16}/>
                 </button>
-                <h1 className='text-lg font-semibold'>GenWeb<span
+                <h1 className='text-lg font-semibold'>WebCraft<span
                 className='text-zinc-400'>.ai</span></h1>
              </div>
              
@@ -73,7 +73,7 @@ useEffect(()=>{
 
           </div>
           <div className='max-w-6xl mx-auto px-6 py-16'>
-                <Motion.div
+                <motion.div
                 initial={{opacity:0,y:30}}
                 animate={{opacity:1,y:0}}
                 className='text-center mb-16'
@@ -83,9 +83,9 @@ useEffect(()=>{
                     <span className='block bg-linear-to-r from-white to-zinc-400 bg-clip-text-transparent'>with real power</span>
                   </h1>
                   <p className='text-zinc-400 max-w-2xl mx-auto'>
-                    This process may take several minutes.genweb.ai focuses on quality,not shortcuts.
+                    This process may take several minutes.WebCraft.ai focuses on quality,not shortcuts.
                   </p>
-                </Motion.div>
+                </motion.div>
                 <div className='mb-14'>
                   <h1 className='text-xl font-semibold mb-2'>Describe your Website</h1>
                   <div className='relative'>
@@ -100,7 +100,7 @@ useEffect(()=>{
                 <div className='flex justify-center'>
                   <motion.button
                   onClick={handleGenerateWebsite}
-                  disabled={!prompt.trim() && loading}
+                  disabled={!prompt.trim() ||  loading}
                   whileHover={{scale:1.05}}
                   whileTap={{scale:0.96}}
                    className={`px-14 py-4 rounded-2xl font-semibold text-lg bg-white text-black
